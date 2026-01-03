@@ -1,0 +1,5 @@
+setup.py
+adaptive_trainer.egg-info/PKG-INFO
+adaptive_trainer.egg-info/SOURCES.txt
+adaptive_trainer.egg-info/dependency_links.txt
+adaptive_trainer.egg-info/top_level.txt

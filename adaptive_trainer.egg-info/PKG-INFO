@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: adaptive-trainer
+Version: 0.1.0
+Summary: Adaptive resource optimizer for ML training
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+Adaptive Trainer
+=================
+
+Adaptive Training Budget Optimization for supervised ML models using a bandit-based agentic framework. The package provides a planner, critic, memory, and an optimizer loop to experiment with training budget allocation strategies.
+
+Installation
+------------
+
+pip install adaptive-trainer
+
+Usage
+-----
+
+from adaptive_trainer import AdaptiveTrainer
+trainer = AdaptiveTrainer(alpha=1e-4)
