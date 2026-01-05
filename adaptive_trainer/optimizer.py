@@ -19,14 +19,19 @@ class AgenticLoop:
     (batch size, epochs, reserved capacity); the solver (trainer) consumes that
     budget and reports validation performance. The critic compares validation
     metrics and the memory records outcomes to enable bandit-style analysis.
+
+    The loop is alpha-aware: it uses the alpha parameter to compute rewards and
+    to pass cost-sensitivity into the planner so that decisions prioritize the
+    overall Reward = metric - alpha * cost instead of pure accuracy.
     """
 
-    def __init__(self, dist_matrix: np.ndarray):
+    def __init__(self, dist_matrix: np.ndarray, alpha: float = 0.0005):
         self.D = dist_matrix
         self.n = dist_matrix.shape[0]
         self.memory = AgentMemory()
         self.planner = PlannerAgent()
         self.critic = CriticAgent()
+        self.alpha = float(alpha)
         # SolverAgent is part of the top-level code and is instantiated
         # at runtime by the loop to preserve backward compatibility with
         # existing experiment code.
@@ -40,7 +45,13 @@ class AgenticLoop:
 
         for ep in range(1, episodes + 1):
             # Planner returns a training budget: batch (pop_size), epochs (max_iter), reserved (elite_size)
-            params = self.planner.choose(self.n, self.memory)
+            # Maintain backward compatibility with user-supplied planner functions that
+            # may not accept the new `alpha` parameter by falling back to the
+            # legacy two-argument call if needed.
+            try:
+                params = self.planner.choose(self.n, self.memory, alpha=self.alpha)
+            except TypeError:
+                params = self.planner.choose(self.n, self.memory)
 
             # Deterministic seed schedule
             seed = int(base_seed) + ep
@@ -68,8 +79,7 @@ class AgenticLoop:
 
             outcome = self.critic.assess(previous_best, current_best, self.memory)
             # Compute ML reward and record episode (reward = metric - alpha * cost)
-            alpha = 0.0005
-            reward = float(current_metric) - alpha * resource_cost
+            reward = float(current_metric) - self.alpha * resource_cost
 
             # Memory records the episode and updates canonical best; include reward and cost
             # Keep storing metric in 'distance' field for backward compatibility
@@ -114,11 +124,11 @@ class AdaptiveTrainer:
         """Return a training budget given a context dictionary.
 
         Context should contain at least 'dataset_size' (int). If missing,
-        a default size of 40 is used.
+        a default size of 40 is used. The planner is passed the `alpha` value
+        so that planning decisions can account for cost-sensitivity.
         """
         size = int(context.get("dataset_size", context.get("problem_size", 40)))
-        return self.planner.choose(size, self.memory)
-
+        return self.planner.choose(size, self.memory, alpha=self.alpha)
     def observe(self, metric: float, cost: float, params: Dict = None, episode: int = None, elapsed_time: float = 0.0):
         """Record an observed validation metric and resource cost.
 

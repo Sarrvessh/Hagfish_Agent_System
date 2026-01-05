@@ -88,3 +88,50 @@ class AgentMemory:
         if not self.episode_history:
             return ""
         return str(self.episode_history[-1].get("outcome", ""))
+
+    def get_efficiency_trend(self, n: int = 3) -> float:
+        """Compute accuracy_gain / cost_spent over the last `n` episodes.
+
+        The method computes the improvement in validation metric (distance)
+        over the window and divides it by the total resource cost observed in
+        that window. This is a simple proxy for the marginal efficiency of
+        recent budget allocations. If insufficient data exists or costs are
+        zero, the method returns 0.0.
+
+        Returns
+        -------
+        float
+            Ratio of accuracy_gain to total cost over the last `n` episodes.
+        """
+        if len(self.episode_history) < 2:
+            return 0.0
+
+        window = self.episode_history[-n:]
+        # Require at least two points to measure gain
+        if len(window) < 2:
+            return 0.0
+
+        start_distance = float(window[0].get("distance", 0.0))
+        end_distance = float(window[-1].get("distance", 0.0))
+        accuracy_gain = max(0.0, end_distance - start_distance)
+
+        total_cost = sum([int(r.get("resource_cost", 0)) for r in window])
+        if total_cost <= 0:
+            return 0.0
+
+        return float(accuracy_gain) / float(total_cost)
+
+    def get_last_reward_slope(self) -> float:
+        """Return the slope of the reward between the last two episodes.
+
+        This is computed as (last_reward - previous_reward). If fewer than two
+        episodes exist, returns 0.0. The planner can use a negative slope to
+        avoid escalating resources when reward is decreasing.
+        """
+        if len(self.episode_history) < 2:
+            return 0.0
+        last = self.episode_history[-1].get("reward", None)
+        prev = self.episode_history[-2].get("reward", None)
+        if last is None or prev is None:
+            return 0.0
+        return float(last) - float(prev)

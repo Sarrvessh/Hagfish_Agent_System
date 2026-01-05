@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hagfish-adaptive-trainer"
-version = "0.1.1"
+version = "0.2.1"
 description = "Adaptive training budget optimizer (bandit-style agentic framework)"
 readme = "README.md"
 requires-python = ">=3.8"
 
 authors = [
-  { name = "Sarvesh PV", email = "sarvesh.pv@example.com" },
+  { name = "Sarvesh PV", email = "pvsarvesh29@gmail.com" },
 ]
 license = { text = "MIT" }
 keywords = ["adaptive", "training", "bandit", "optimizer", "machine-learning", "resource-allocation"]

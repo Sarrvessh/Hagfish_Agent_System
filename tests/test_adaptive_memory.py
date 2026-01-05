@@ -27,6 +27,37 @@ class TestAgentMemory(unittest.TestCase):
         self.assertAlmostEqual(mem.best_distance, 0.60)
         self.assertEqual(mem.last_outcome(), "stagnated")
 
+    def test_efficiency_trend(self):
+        mem = AgentMemory()
+
+        # Episode 1
+        mem.record_episode(1, {"pop_size": 10}, 0.50, [], 0.1, "improved", reward=0.45, cost=100)
+        # Episode 2
+        mem.record_episode(2, {"pop_size": 20}, 0.55, [], 0.2, "improved", reward=0.53, cost=200)
+        # Episode 3
+        mem.record_episode(3, {"pop_size": 5}, 0.56, [], 0.15, "improved", reward=0.55, cost=50)
+
+        eff = mem.get_efficiency_trend(n=3)
+        # accuracy_gain = 0.56 - 0.50 = 0.06, total_cost = 100 + 200 + 50 = 350
+        self.assertAlmostEqual(eff, 0.06 / 350)
+
+    def test_last_reward_slope_and_planner_stop(self):
+        from adaptive_trainer.planner import PlannerAgent
+        mem = AgentMemory()
+        planner = PlannerAgent()
+
+        # Two episodes with decreasing rewards -> slope negative
+        mem.record_episode(1, {"pop_size": 10}, 0.80, [], 0.1, "improved", reward=0.80, cost=100)
+        mem.record_episode(2, {"pop_size": 20}, 0.81, [], 0.2, "improved", reward=0.79, cost=500)
+        slope = mem.get_last_reward_slope()
+        self.assertLess(slope, 0.0)
+
+        mem.stagnation_count = 3
+        params = planner.choose(40, mem, alpha=1e-4)
+        # Because slope negative the planner should not escalate and should cool down
+        self.assertLessEqual(params["pop_size"], 16)
+        self.assertLessEqual(params["max_iter"], 50)
+
 
 if __name__ == "__main__":
     unittest.main()

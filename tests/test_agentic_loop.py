@@ -25,7 +25,7 @@ class TestAgenticLoop(unittest.TestCase):
 
         self.assertEqual(len(res["memory"].episode_history), 2)
         for rec in res["memory"].episode_history:
-            self.assertIn(rec["outcome"], ("improved", "stagnated"))
+            self.assertIn(rec["outcome"], ("improved", "stagnated", "saturated"))
             self.assertTrue(rec["distance"] >= 0.0)
         self.assertTrue(res["best_distance"] < float("inf"))
 

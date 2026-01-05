@@ -17,6 +17,9 @@ class TestAdaptiveTrainer(unittest.TestCase):
         rec = at.memory.episode_history[-1]
         self.assertAlmostEqual(rec["distance"], 0.8)
         self.assertIn("reward", rec)
+        # Reward should reflect metric - alpha * cost
+        expected_reward = 0.8 - 0.0001 * 1000
+        self.assertAlmostEqual(rec["reward"], expected_reward)
 
 
 if __name__ == "__main__":
