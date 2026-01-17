@@ -158,6 +158,77 @@ Hagfish-SOTA has been rigorously tested across **8 HPOBench datasets** and **Neu
 
 ---
 
+### Benchmark Methodology & Parameters
+
+#### Experimental Configuration
+
+| Parameter      | Value            | Purpose                                            |
+| -------------- | ---------------- | -------------------------------------------------- |
+| **Seeds**      | 5                | Statistical robustness - multiple independent runs |
+| **Rounds**     | 50               | Episodes per optimization run                      |
+| **Alpha (α)**  | 0.3              | Cost penalty weight (70% accuracy, 30% cost)       |
+| **Fidelities** | [0.5, 0.75, 1.0] | Training budget levels (Hagfish v3)                |
+| **Cost Model** | Quadratic (f²)   | Realistic compute cost scaling                     |
+
+#### Parameter Selection Guide
+
+**Seeds (num_seeds):**
+
+- **5 seeds:** Standard benchmarking (used in our results)
+- **10 seeds:** High confidence requirements
+- **3 seeds:** Quick validation runs
+- Higher seeds improve statistical power but increase runtime linearly
+
+**Rounds (episodes):**
+
+- **50 rounds:** Balanced exploration/exploitation (recommended)
+- **30 rounds:** Fast experimentation
+- **100 rounds:** Deep convergence analysis
+- More rounds allow better saturation detection
+
+**Alpha (cost penalty):**
+
+- **α=0.3:** Accuracy-focused (70% weight on accuracy)
+- **α=0.5:** Balanced (equal weight)
+- **α=0.7-0.9:** Cost-focused (cheaper but lower accuracy)
+- Formula: `Reward = Accuracy - (α × Cost)`
+
+#### Evaluation Metrics
+
+**Accuracy:**
+
+- Validation set performance (0-1 scale)
+- Mean ± Standard Deviation across seeds
+
+**Cost:**
+
+- Quadratic fidelity cost: `Cost = (fidelity² × 0.02) + (fidelity² × 0.02)`
+- Total cost accumulated across all rounds
+
+**Efficiency:**
+
+- Pareto frontier position (non-dominated solutions)
+- Cost-Accuracy trade-off: `Efficiency = Accuracy / (Cost + ε)`
+
+**Statistical Significance:**
+
+- Two-tailed t-test comparing Hagfish vs baselines
+- Significance levels: \* (p<0.05), ** (p<0.01), \*** (p<0.001)
+
+#### Runtime Information
+
+Approximate execution times (per dataset):
+
+| Configuration         | Time     | Use Case                    |
+| --------------------- | -------- | --------------------------- |
+| 5 seeds × 50 rounds   | ~30 sec  | Standard benchmarking       |
+| 10 seeds × 100 rounds | ~2-3 min | Publication-quality results |
+| 3 seeds × 30 rounds   | ~15 sec  | Quick validation            |
+
+**NAS Benchmark:** ~5-10 minutes (100 rounds × 10 seeds)
+
+---
+
 ### Reproducibility
 
 All results are fully reproducible:
@@ -165,8 +236,14 @@ All results are fully reproducible:
 ```bash
 cd experiments
 
-# Run HPOBench on specific dataset
+# Run HPOBench on specific dataset (standard config)
 python final.py --mode benchmark --dataset australian --seeds 5 --rounds 50 --alpha 0.3
+
+# Quick validation run
+python final.py --mode benchmark --dataset credit_g --seeds 3 --rounds 30 --alpha 0.3
+
+# High-confidence experiment
+python final.py --mode benchmark --dataset blood_transfusion --seeds 10 --rounds 100 --alpha 0.3
 
 # Run NAS benchmark
 python nas_benchmark.py
@@ -175,9 +252,9 @@ python nas_benchmark.py
 # australian, car, phoneme, vehicle, kc1, segment, blood_transfusion, credit_g
 ```
 
-**Hardware:** Standard Windows machine  
-**Python Environment:** Python 3.x with simple-hpo-bench, optuna, numpy, pandas, matplotlib  
-**Full Results:** See `experiments/comprehensive_benchmark_results.md`
+**Hardware:** Standard Windows machine (CPU-based)  
+**Python Environment:** Python 3.8+ with simple-hpo-bench, optuna, numpy, pandas, matplotlib, seaborn, scipy  
+**Full Results:** See `experiments/comprehensive_benchmark_results.md` for detailed analysis
 
 ---
 
@@ -249,6 +326,176 @@ trainer.observe(
     params=plan
 )
 ```
+
+---
+
+## API Reference
+
+### AdaptiveTrainer
+
+Main class for adaptive training budget optimization.
+
+#### Constructor
+
+```python
+AdaptiveTrainer(alpha: float = 1e-5)
+```
+
+**Parameters:**
+
+- `alpha` (float): Cost penalty coefficient. Controls accuracy vs cost trade-off.
+  - Lower values (1e-6): Prioritize accuracy
+  - Higher values (1e-4): Prioritize cost reduction
+
+#### Methods
+
+**`plan(context: Dict) -> Dict`**
+
+Request a training budget based on historical performance.
+
+**Parameters:**
+
+- `context` (dict): Context information with keys:
+  - `dataset_size` (int): Number of training samples
+  - `episode_num` (int, optional): Current episode number
+  - `progress_ratio` (float, optional): Completion percentage (0-1)
+
+**Returns:**
+
+- `dict`: Training plan with keys like `pop_size`, `max_iter`, `elite_size`, or `fidelity`
+
+**Example:**
+
+```python
+plan = trainer.plan({"dataset_size": 1000, "episode_num": 5})
+# Returns: {'pop_size': 32, 'max_iter': 100, 'fidelity': 0.75}
+```
+
+**`observe(metric: float, cost: float, **kwargs) -> None`\*\*
+
+Report training results back to the agent for learning.
+
+**Parameters:**
+
+- `metric` (float): Model performance (accuracy, F1, etc.)
+- `cost` (float): Computational cost incurred
+- `**kwargs`: Additional context (optional)
+
+**Example:**
+
+```python
+trainer.observe(metric=0.935, cost=697)
+```
+
+---
+
+## Requirements
+
+### Core Dependencies
+
+```
+numpy>=1.20.0
+scipy>=1.7.0
+```
+
+### Benchmarking (Optional)
+
+```
+simple-hpo-bench>=0.1.0
+optuna>=3.0.0
+pandas>=1.3.0
+matplotlib>=3.4.0
+seaborn>=0.11.0
+scikit-learn>=1.0.0
+```
+
+Install all dependencies:
+
+```bash
+pip install hagfish-adaptive-trainer[benchmark]
+```
+
+---
+
+## FAQ & Troubleshooting
+
+### Q: Why am I getting ConvergenceWarning from Scikit-Learn?
+
+**A:** This is expected during early episodes when Hagfish explores low-budget configurations. The agent intentionally tests cheaper settings to learn the cost-accuracy trade-off. You can safely ignore these warnings or suppress them:
+
+```python
+import warnings
+from sklearn.exceptions import ConvergenceWarning
+warnings.filterwarnings('ignore', category=ConvergenceWarning)
+```
+
+### Q: How do I choose the right alpha value?
+
+**A:** Start with these guidelines:
+
+- **Production models:** α=1e-6 to 1e-5 (prioritize accuracy)
+- **Experimentation:** α=1e-5 to 1e-4 (balanced)
+- **Large-scale sweeps:** α=1e-4 to 1e-3 (aggressive cost reduction)
+
+Run quick experiments with 3 seeds to find your optimal alpha before full benchmarks.
+
+### Q: Can I use Hagfish with PyTorch/TensorFlow?
+
+**A:** Yes! Hagfish is framework-agnostic. Just map the budget parameters to your framework:
+
+```python
+plan = trainer.plan({"dataset_size": len(train_loader)})
+
+# PyTorch example
+model = YourModel()
+optimizer = torch.optim.Adam(model.parameters())
+for epoch in range(plan["max_iter"]):
+    # Training loop...
+
+trainer.observe(metric=val_accuracy, cost=training_time)
+```
+
+### Q: My results differ slightly from benchmark numbers. Why?
+
+**A:** This is normal due to:
+
+- Random seed variation (use more seeds for stability)
+- Hardware differences (CPU vs GPU timing)
+- Library version differences (ensure same numpy/scipy versions)
+
+Differences of ±2% are typical. For exact reproduction, use the same environment.
+
+### Q: How does Hagfish handle failures or crashes?
+
+**A:** The agent tracks history internally. If a configuration fails:
+
+1. Report it with `observe(metric=-1.0, cost=0.0)`
+2. Hagfish will learn to avoid similar configurations
+3. Use try-except blocks around training for robustness
+
+### Q: Can I save/load the trainer state?
+
+**A:** Currently, state persistence is not built-in. For multi-session experiments, you can:
+
+- Track history externally in a database
+- Re-run short warm-up episodes to rebuild context
+- Contribute a serialization feature (see Contributing section)
+
+---
+
+## Links & Resources
+
+- **PyPI Package:** https://pypi.org/project/hagfish-adaptive-trainer/
+- **Documentation:** Would be updated here soon.
+- **Benchmark Results:** [`experiments/comprehensive_benchmark_results.md`](experiments/comprehensive_benchmark_results.md)
+- **Issue Tracker:** (Add your GitHub issues link)
+- **Discussions:** (Add your GitHub discussions link)
+
+**Related Papers & Methods:**
+
+- Hyperband: [Li et al., 2018](https://arxiv.org/abs/1603.06560)
+- BOHB: [Falkner et al., 2018](https://arxiv.org/abs/1807.01774)
+- PBT: [Jaderberg et al., 2017](https://arxiv.org/abs/1711.09846)
 
 ---
 
