@@ -252,22 +252,6 @@ trainer.observe(
 
 ---
 
-## Benchmarks & Experiments
-
-### Cloud Resource Benchmark
-
-Compare Hagfish against multiple HPO algorithms (Optuna, Grid, Random, Successive Halving, PBT) for cloud resource allocation.
-
-**Run the benchmark:**
-
-```bash
-python experiments/benchmarkf.py --data-dir experiments/dataset --rounds 50
-```
-
-See [`experiments/benchmarkf.py`](experiments/benchmarkf.py) for implementation details.
-
----
-
 ## Advanced configuration
 
 ### The Alpha (α) parameter
