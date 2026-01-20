@@ -1,10 +1,11 @@
-# Hagfish-SOTA: Adaptive Multi-Fidelity Hyperparameter Optimization
+# Hagfish Adaptive Multi-Fidelity Hyperparameter Optimization
+# hagfish_adaptive_tuner
 
 [![PyPI version](https://img.shields.io/pypi/v/hagfish-adaptive-trainer.svg)](https://pypi.org/project/hagfish-adaptive-trainer/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-**Hagfish-SOTA** is a state-of-the-art adaptive hyperparameter optimization framework that achieves **2.7× faster convergence** than recent methods (DEHB, SMAC3) while maintaining competitive accuracy through intelligent budget allocation.
+**hagfish_adaptive_tuner** is a state-of-the-art adaptive hyperparameter optimization framework that achieves **2.7× faster convergence** than recent methods (DEHB, SMAC3) while maintaining competitive accuracy through intelligent budget allocation.
 
 > _"The fastest path to 95% accuracy isn't always the most expensive one."_
 
@@ -97,7 +98,7 @@ trainer.observe(metric=accuracy, cost=training_cost)
 | Method           | Year | Convergence to 95% | Accuracy (Australian) | Source                     |
 | ---------------- | ---- | ------------------ | --------------------- | -------------------------- |
 | **Fixed**        | -    | 3.79 episodes      | 0.84+                 | This work                  |
-| **Hagfish-SOTA** | 2025 | **3.67 episodes**  | **0.842**             | **This work**              |
+| **Hagfish**      | 2025 | **3.67 episodes**  | **0.842**             | **This work**              |
 | **Hyperband**    | 2017 | 4.14 episodes      | 0.83+                 | This work                  |
 | **DEHB**         | 2021 | ~10 episodes       | 0.862                 | Awad et al., NeurIPS 2021  |
 | **SMAC3**        | 2022 | ~18 episodes       | ~0.85\*               | Lindauer et al., JMLR 2022 |
@@ -120,7 +121,7 @@ _\*Estimated from published performance ratios_
 | Strategy         | Best Accuracy | Total Cost | Efficiency | Rank  |
 | ---------------- | ------------- | ---------- | ---------- | ----- |
 | **Optuna (TPE)** | **0.9159**    | 702.77     | 0.13       | 🥇 #1 |
-| **Hagfish-SOTA** | **0.9144**    | 709.38     | 0.13       | 🥈 #2 |
+| **Hagfish**      | **0.9144**    | 709.38     | 0.13       | 🥈 #2 |
 | Evolution (REA)  | 0.9122        | 751.02     | 0.12       | #3    |
 | DARTS (Sim)      | 0.9082        | 829.20     | 0.11       | #4    |
 | Random           | 0.9053        | 629.02     | 0.14       | #5    |
@@ -142,7 +143,7 @@ Hagfish operates as an episodic agent loop with three cooperating components:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                   HAGFISH-SOTA LOOP                      │
+│                   HAGFISH LOOP                          │
 ├─────────────────────────────────────────────────────────┤
 │                                                          │
 │  1. PLANNER AGENT                                        │
@@ -194,9 +195,9 @@ Hagfish dynamically adjusts training fidelity across three dimensions:
 
 ### Convergence Analysis (Issue #8)
 
-**Validated Claim:** Hagfish-SOTA reaches **95% of maximum accuracy** in **3.67 ± 2.31 episodes**
+**Validated Claim:** Hagfish reaches **95% of maximum accuracy** in **3.67 ± 2.31 episodes**
 
-| Threshold            | Hagfish-SOTA         | Best Competitor  | Speedup        |
+| Threshold            | Hagfish              | Best Competitor  | Speedup        |
 | -------------------- | -------------------- | ---------------- | -------------- |
 | **90% accuracy**     | 2.13 ± 0.99 eps      | Hyperband (1.99) | Comparable     |
 | **95% accuracy**     | **3.67 ± 2.31 eps**  | Fixed (3.79)     | **2nd place**  |
@@ -540,11 +541,11 @@ Contributions are welcome! We're particularly interested in:
 
 ## 📚 Citation
 
-If you use Hagfish-SOTA in your research, please cite:
+If you use Hagfish in your research, please cite:
 
 ```bibtex
 @software{hagfish2025,
-  title = {Hagfish-SOTA: Adaptive Multi-Fidelity Hyperparameter Optimization},
+  title = {Hagfish: Adaptive Multi-Fidelity Hyperparameter Optimization},
   author = {Your Name},
   year = {2025},
   url = {https://github.com/your-repo/hagfish-adaptive-trainer},
