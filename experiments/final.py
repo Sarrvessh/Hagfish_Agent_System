@@ -13,13 +13,13 @@ MODES:
 
 USAGE:
   # Full benchmark (all baselines, multiple datasets)
-  python hagfish_unified.py --mode benchmark --dataset credit_g --seeds 5 --rounds 50 --alpha 0.9
+  python final.py --mode benchmark --dataset credit_g --seeds 5 --rounds 50 --alpha 0.9
 
   # Quick dashboard (4 nice plots for paper)
-  python hagfish_unified.py --mode dashboard --dataset australian --seeds 10 --rounds 50 --alpha 0.9
+  python final.py --mode dashboard --dataset australian --seeds 10 --rounds 50 --alpha 0.9
 
   # Everything (full report + dashboard figures)
-  python hagfish_unified.py --mode full --dataset credit_g --seeds 5 --rounds 50 --alpha 0.9
+  python final.py --mode full --dataset credit_g --seeds 5 --rounds 50 --alpha 0.9
 
 ═══════════════════════════════════════════════════════════════════════════════
 """

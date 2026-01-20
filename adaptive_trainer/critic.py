@@ -4,50 +4,60 @@ from .memory import AgentMemory
 
 
 class CriticAgent:
-    """Performance critic that evaluates validation metric improvement.
-
-    The critic compares previous and current validation metrics and emits a
-    small set of outcome labels used as feedback to the planner:
-      - 'improved' : validation metric increased (training budget was effective)
-      - 'saturated' : tiny positive improvement (we're spending more but gaining almost nothing)
-      - 'stagnated': no improvement observed; planner should consider escalation
-
-    The critic also updates `memory.stagnation_count`, which signals prolonged
-    lack of meaningful improvement and triggers resource adaptations in the planner.
-
-    The goal is to help the planner find the "knee of the curve" where accuracy
-    stops improving significantly while costs keep growing.
+    """Hagfish critic: evaluates training budget effectiveness and deposits slime.
+    
+    The critic acts like the "sensory system" of the hagfish school. When agents
+    (budget configurations) return from exploring the ocean (training), the critic
+    evaluates whether the journey was worthwhile:
+    
+      - 'improved': The budget led to better validation metrics (good path - no slime)
+      - 'saturated': Tiny gains for high cost (weak path - deposit slime)
+      - 'stagnated': No improvement (bad path - deposit slime heavily)
+    
+    The critic also updates the stagnation counter, which triggers elite slime
+    bursts when the population is trapped in local optima.
     """
 
     def assess(self, previous_best: float, current_best: float, memory: AgentMemory) -> Literal["improved", "stagnated", "saturated"]:
-        """Assess improvement between previous and current validation metrics.
+        """Evaluate budget effectiveness and update memory slime mechanics.
 
-        The method distinguishes three outcomes:
-        - 'improved' when the metric increases beyond a tiny numerical tolerance
-        - 'saturated' when the metric increases only marginally (small but > 0)
-        - 'stagnated' when there is no improvement or the metric decreases
+        The critic distinguishes three outcomes:
+          - 'improved': Metric increases beyond meaningful threshold (good path)
+          - 'saturated': Marginal gain with high cost (weak path - mark with slime)
+          - 'stagnated': No improvement or regression (bad path - mark with slime)
 
-        The `saturated` label is intended to signal that more resources are
-        being spent with practically no gain and the planner should back off.
+        Parameters
+        ----------
+        previous_best : float
+            Best validation metric from prior episodes
+        current_best : float
+            Current episode's validation metric
+        memory : AgentMemory
+            Shared memory; slime will be deposited on weak outcomes
+
+        Returns
+        -------
+        Literal["improved", "stagnated", "saturated"]
+            Outcome label for the planner and memory
         """
-        # New tolerances: be harder to please to avoid tiny gains that cost a lot
-        # `tol` now represents the minimal relative improvement considered worthwhile
-        tol = 0.005  # 0.5% relative improvement required to be considered a true 'improved'
-        # Very small improvements considered noise/stagnation threshold
-        tiny_improvement = 1e-4
+        # Thresholds for meaningful improvement
+        tol = 0.005  # 0.5% relative improvement required to be considered 'improved'
+        tiny_improvement = 1e-4  # Very small gains are treated as stagnation
 
         # For validation metrics (higher is better)
         improvement = current_best - previous_best
+        
         if improvement > tol:
-            # Clearly improved -> reset stagnation counter
+            # Clear improvement - good path, no slime
             memory.stagnation_count = 0
             return "improved"
 
-        # Small but non-negligible improvement -> saturated (not worth the cost)
+        # Small but non-negligible improvement - mark as saturated (not worth the cost)
         if tiny_improvement < improvement <= tol:
             memory.stagnation_count += 1
+            # Don't deposit slime yet - need to see pattern
             return "saturated"
 
-        # Otherwise no meaningful improvement
+        # Otherwise no meaningful improvement - bad path, mark with slime
         memory.stagnation_count += 1
         return "stagnated"

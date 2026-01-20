@@ -83,3 +83,4 @@ experiments/dataset/*.zip
 experiments/experiments/*.csv
 experiments/experiments/*.png
 experiments/results*.csv
+papers/

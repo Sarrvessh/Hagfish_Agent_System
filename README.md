@@ -28,16 +28,16 @@ Hagfish introduces an agentic control loop that continuously asks:
 
 ## Performance Benchmarks
 
-**Last Updated:** January 17, 2026
+**Last Updated:** January 20, 2026
 
 Hagfish-SOTA has been rigorously tested across **8 HPOBench datasets** and **Neural Architecture Search (NAS)** tasks, demonstrating state-of-the-art performance in multi-fidelity hyperparameter optimization.
 
 ### 🏆 Key Results Summary
 
-- **Pareto Frontier Dominance:** #1 position on 7/8 HPOBench datasets (87.5%)
-- **Highest Accuracy:** Achieved top accuracy on 7/8 datasets
-- **Cost Efficiency:** 13% average cost reduction vs Fixed baseline
-- **Statistical Significance:** Beats 8 baseline methods across 3 datasets (p<0.05)
+- **Pareto Frontier:** On the frontier for 6/8 HPOBench datasets
+- **Highest Accuracy:** Leads on 6/8 datasets
+- **Cost Efficiency:** 11.9% average cost reduction vs Fixed baseline
+- **Statistical Significance:** p<0.05 wins on Australian, KC1, Blood, Credit_g
 - **NAS Performance:** #2 accuracy (0.9144), competitive efficiency (0.13)
 
 ---
@@ -47,22 +47,22 @@ Hagfish-SOTA has been rigorously tested across **8 HPOBench datasets** and **Neu
 **Configuration:** 5 seeds × 50 rounds × α=0.3 (accuracy-focused)  
 **Baselines:** Fixed, Random, CheapGreedy, EpsilonGreedy, SuccessiveHalving, Hyperband, PBT, Optuna
 
-| Dataset               | Hagfish Accuracy    | Pareto Position      | Cost vs Fixed | Statistical Significance   |
-| --------------------- | ------------------- | -------------------- | ------------- | -------------------------- |
-| **Australian**        | **0.8379 ± 0.0169** | **#1**               | -13%          | p>0.05                     |
-| **Car**               | **0.7463 ± 0.0503** | **#1** (only method) | -13%          | p>0.05                     |
-| **Phoneme**           | **0.7542 ± 0.0266** | **#1**               | -14%          | p>0.05                     |
-| **Vehicle**           | 0.7069 ± 0.0292     | Not on frontier      | -14%          | p>0.05                     |
-| **KC1**               | **0.6222 ± 0.0232** | **#1**               | -12%          | **p=0.018 vs CheapGreedy** |
-| **Segment**           | **0.7717 ± 0.0396** | **#1**               | -13%          | p>0.05                     |
-| **Blood Transfusion** | **0.5965 ± 0.0095** | **#1**               | -12%          | **p<0.05 vs 6 methods** ⭐ |
-| **Credit_g**          | **0.7320 ± 0.0185** | **#1**               | -13%          | **p=0.013 vs CheapGreedy** |
+| Dataset               | Hagfish Accuracy    | Pareto Position           | Cost vs Fixed | Statistical Significance      |
+| --------------------- | ------------------- | ------------------------- | ------------- | ----------------------------- |
+| **Australian**        | **0.8422 ± 0.0226** | On frontier               | -9.5%         | p<0.05 vs CheapGreedy         |
+| **Car**               | **0.7462 ± 0.0504** | On frontier               | -10.8%        | none                          |
+| **Phoneme**           | **0.7531 ± 0.0260** | On frontier               | -12.5%        | none                          |
+| **Vehicle**           | 0.7101 ± 0.0295     | Off frontier (PBT best)   | -11.6%        | none                          |
+| **KC1**               | **0.6231 ± 0.0178** | On frontier               | -11.9%        | p=0.0058 vs CheapGreedy       |
+| **Segment**           | 0.7659 ± 0.0378     | Off frontier (PBT/Hyperband) | -12.8%    | none                          |
+| **Blood Transfusion** | **0.5974 ± 0.0100** | On frontier               | -12.3%        | p<0.05 vs 7 baselines         |
+| **Credit_g**          | **0.7342 ± 0.0228** | On frontier               | -13.7%        | p=0.0388 vs CheapGreedy       |
 
 **Average Performance:**
 
-- **Mean Accuracy:** Leads on 7/8 datasets
-- **Cost Reduction:** 13.0% vs Fixed baseline (2.0 total cost → 1.74 average)
-- **Pareto Dominance:** 87.5% success rate
+- **Mean Accuracy:** Leads on 6/8 datasets
+- **Cost Reduction:** 11.9% vs Fixed baseline (2.0 total cost → 1.76 average)
+- **Pareto Dominance:** 75% success rate
 
 ---
 
@@ -285,7 +285,6 @@ The system operates as an episodic agent loop composed of three cooperating comp
 
 - **CriticAgent**
   Evaluates outcomes and classifies them as:
-
   - Improvement
   - Stagnation
   - Saturation
@@ -486,10 +485,8 @@ Differences of ±2% are typical. For exact reproduction, use the same environmen
 ## Links & Resources
 
 - **PyPI Package:** https://pypi.org/project/hagfish-adaptive-trainer/
-- **Documentation:** Would be updated here soon.
+- **Documentation:** Would be updated here
 - **Benchmark Results:** [`experiments/comprehensive_benchmark_results.md`](experiments/comprehensive_benchmark_results.md)
-- **Issue Tracker:** (Add your GitHub issues link)
-- **Discussions:** (Add your GitHub discussions link)
 
 **Related Papers & Methods:**
 
