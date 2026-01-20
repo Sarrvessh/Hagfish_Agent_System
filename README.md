@@ -47,16 +47,16 @@ Hagfish-SOTA has been rigorously tested across **8 HPOBench datasets** and **Neu
 **Configuration:** 5 seeds × 50 rounds × α=0.3 (accuracy-focused)  
 **Baselines:** Fixed, Random, CheapGreedy, EpsilonGreedy, SuccessiveHalving, Hyperband, PBT, Optuna
 
-| Dataset               | Hagfish Accuracy    | Pareto Position           | Cost vs Fixed | Statistical Significance      |
-| --------------------- | ------------------- | ------------------------- | ------------- | ----------------------------- |
-| **Australian**        | **0.8422 ± 0.0226** | On frontier               | -9.5%         | p<0.05 vs CheapGreedy         |
-| **Car**               | **0.7462 ± 0.0504** | On frontier               | -10.8%        | none                          |
-| **Phoneme**           | **0.7531 ± 0.0260** | On frontier               | -12.5%        | none                          |
-| **Vehicle**           | 0.7101 ± 0.0295     | Off frontier (PBT best)   | -11.6%        | none                          |
-| **KC1**               | **0.6231 ± 0.0178** | On frontier               | -11.9%        | p=0.0058 vs CheapGreedy       |
-| **Segment**           | 0.7659 ± 0.0378     | Off frontier (PBT/Hyperband) | -12.8%    | none                          |
-| **Blood Transfusion** | **0.5974 ± 0.0100** | On frontier               | -12.3%        | p<0.05 vs 7 baselines         |
-| **Credit_g**          | **0.7342 ± 0.0228** | On frontier               | -13.7%        | p=0.0388 vs CheapGreedy       |
+| Dataset               | Hagfish Accuracy    | Pareto Position              | Cost vs Fixed | Statistical Significance |
+| --------------------- | ------------------- | ---------------------------- | ------------- | ------------------------ |
+| **Australian**        | **0.8422 ± 0.0226** | On frontier                  | -9.5%         | p<0.05 vs CheapGreedy    |
+| **Car**               | **0.7462 ± 0.0504** | On frontier                  | -10.8%        | none                     |
+| **Phoneme**           | **0.7531 ± 0.0260** | On frontier                  | -12.5%        | none                     |
+| **Vehicle**           | 0.7101 ± 0.0295     | Off frontier (PBT best)      | -11.6%        | none                     |
+| **KC1**               | **0.6231 ± 0.0178** | On frontier                  | -11.9%        | p=0.0058 vs CheapGreedy  |
+| **Segment**           | 0.7659 ± 0.0378     | Off frontier (PBT/Hyperband) | -12.8%        | none                     |
+| **Blood Transfusion** | **0.5974 ± 0.0100** | On frontier                  | -12.3%        | p<0.05 vs 7 baselines    |
+| **Credit_g**          | **0.7342 ± 0.0228** | On frontier                  | -13.7%        | p=0.0388 vs CheapGreedy  |
 
 **Average Performance:**
 
