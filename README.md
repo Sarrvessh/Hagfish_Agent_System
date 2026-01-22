@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-**hagfish_adaptive_tuner** is a state-of-the-art adaptive hyperparameter optimization framework that achieves **2.7× faster convergence** than recent methods (DEHB, SMAC3) while maintaining competitive accuracy through intelligent budget allocation.
+**hagfish_adaptive_tuner** is a  adaptive hyperparameter optimization framework that achieves **2.7× faster convergence** than recent methods (DEHB, SMAC3) while maintaining competitive accuracy through intelligent budget allocation.
 
 > _"The fastest path to 95% accuracy isn't always the most expensive one."_
 
@@ -17,7 +17,7 @@
 | --------------------- | ------------------------------------------- | --------------------------------------- |
 | **Convergence Speed** | **3.67 episodes** to 95% accuracy           | 2.7× faster than DEHB (~10 episodes)    |
 | **Cost Efficiency**   | **11.9% average savings** vs Fixed baseline | Adaptive budget: 0.2-1.0 fidelity       |
-| **Pareto Dominance**  | **6/8 datasets** on frontier                | State-of-the-art accuracy-cost tradeoff |
+| **Pareto Dominance**  | **6/8 datasets** on frontier                |  accuracy-cost tradeoff |
 | **Statistical Wins**  | **p < 0.05** on 4/8 datasets                | Australian, KC1, Blood, Credit_g        |
 | **NAS Performance**   | **#2 accuracy** (0.9144)                    | Competitive with Optuna (0.9159)        |
 
