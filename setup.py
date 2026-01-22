@@ -8,7 +8,7 @@ setup(
     name="hagfish-adaptive-trainer",
     version="0.2.1",
     packages=find_packages(),
-    description="Adaptive resource optimizer for ML training",
+    description="Adaptive optimizer for ML training",
     long_description=long_description,
     long_description_content_type="text/markdown",
     python_requires=">=3.8",

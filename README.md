@@ -1,4 +1,3 @@
-# Hagfish Adaptive Multi-Fidelity Hyperparameter Optimization
 # hagfish_adaptive_tuner
 
 [![PyPI version](https://img.shields.io/pypi/v/hagfish-adaptive-trainer.svg)](https://pypi.org/project/hagfish-adaptive-trainer/)
@@ -11,7 +10,7 @@
 
 ---
 
-## 🏆 Key Achievements
+## Key Achievements
 
 | Metric                | Performance                                 | Comparison                              |
 | --------------------- | ------------------------------------------- | --------------------------------------- |
@@ -37,7 +36,7 @@ Hagfish introduces an **agentic control loop** that continuously asks:
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -69,7 +68,7 @@ trainer.observe(metric=accuracy, cost=training_cost)
 
 ---
 
-## 📊 Comprehensive Benchmark Results
+## Comprehensive Benchmark Results
 
 ### HPOBench Results (8 Datasets × 5 Seeds × 50 Rounds)
 
@@ -95,15 +94,15 @@ trainer.observe(metric=accuracy, cost=training_cost)
 
 ### Comparison to Modern SOTA Methods (2021-2025)
 
-| Method           | Year | Convergence to 95% | Accuracy (Australian) | Source                     |
-| ---------------- | ---- | ------------------ | --------------------- | -------------------------- |
-| **Fixed**        | -    | 3.79 episodes      | 0.84+                 | This work                  |
-| **Hagfish**      | 2025 | **3.67 episodes**  | **0.842**             | **This work**              |
-| **Hyperband**    | 2017 | 4.14 episodes      | 0.83+                 | This work                  |
-| **DEHB**         | 2021 | ~10 episodes       | 0.862                 | Awad et al., NeurIPS 2021  |
-| **SMAC3**        | 2022 | ~18 episodes       | ~0.85\*               | Lindauer et al., JMLR 2022 |
-| Optuna 4.6       | 2024 | 7.96 episodes      | 0.82+                 | This work                  |
-| PBT              | 2017 | 7.80 episodes      | 0.81+                 | This work                  |
+| Method        | Year | Convergence to 95% | Accuracy (Australian) | Source                     |
+| ------------- | ---- | ------------------ | --------------------- | -------------------------- |
+| **Fixed**     | -    | 3.79 episodes      | 0.84+                 | This work                  |
+| **Hagfish**   | 2025 | **3.67 episodes**  | **0.842**             | **This work**              |
+| **Hyperband** | 2017 | 4.14 episodes      | 0.83+                 | This work                  |
+| **DEHB**      | 2021 | ~10 episodes       | 0.862                 | Awad et al., NeurIPS 2021  |
+| **SMAC3**     | 2022 | ~18 episodes       | ~0.85\*               | Lindauer et al., JMLR 2022 |
+| Optuna 4.6    | 2024 | 7.96 episodes      | 0.82+                 | This work                  |
+| PBT           | 2017 | 7.80 episodes      | 0.81+                 | This work                  |
 
 _\*Estimated from published performance ratios_
 
@@ -135,7 +134,7 @@ _\*Estimated from published performance ratios_
 
 ---
 
-## 🧠 How It Works
+## How It Works
 
 ### The Agentic Control Loop
 
@@ -145,28 +144,28 @@ Hagfish operates as an episodic agent loop with three cooperating components:
 ┌─────────────────────────────────────────────────────────┐
 │                   HAGFISH LOOP                          │
 ├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  1. PLANNER AGENT                                        │
+│                                                         │
+│  1. PLANNER AGENT                                       │
 │     ├─ Proposes training budget (fidelity, batch, iter) │
 │     ├─ Based on historical performance trends           │
 │     └─ Adapts to stagnation/saturation signals          │
-│                                                          │
-│  2. TRAINING (Your Model)                                │
+│                                                         │
+│  2. TRAINING (Your Model)                               │
 │     ├─ Execute plan: train with proposed budget         │
 │     └─ Measure: accuracy, cost, convergence             │
-│                                                          │
-│  3. CRITIC AGENT                                         │
+│                                                         │
+│  3. CRITIC AGENT                                        │
 │     ├─ Evaluates outcome:                               │
 │     │   • Improvement → Continue/Escalate               │
 │     │   • Stagnation → Escalate budget                  │
 │     │   • Saturation → Prune/Reduce budget              │
 │     └─ Updates strategy for next episode                │
-│                                                          │
-│  4. AGENT MEMORY                                         │
+│                                                         │
+│  4. AGENT MEMORY                                        │
 │     ├─ Tracks reward trends over time                   │
 │     ├─ Detects performance plateaus                     │
 │     └─ Prevents unnecessary escalation                  │
-│                                                          │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -191,9 +190,9 @@ Hagfish dynamically adjusts training fidelity across three dimensions:
 
 ---
 
-## 📈 Performance Metrics
+## Performance Metrics
 
-### Convergence Analysis (Issue #8)
+### Convergence Analysis
 
 **Validated Claim:** Hagfish reaches **95% of maximum accuracy** in **3.67 ± 2.31 episodes**
 
@@ -235,7 +234,7 @@ Hagfish dynamically adjusts training fidelity across three dimensions:
 
 ---
 
-## 🔧 Advanced Configuration
+## Advanced Configuration
 
 ### API Reference
 
@@ -365,7 +364,7 @@ for episode in range(50):
 
 ---
 
-## 📚 Reproducibility
+## Reproducibility
 
 ### Running Benchmarks
 
@@ -429,7 +428,7 @@ python convergence_analysis.py  # Generates convergence curves and statistics
 
 ---
 
-## 📖 Documentation
+## Documentation
 
 ### Core Documentation
 
@@ -447,7 +446,7 @@ python convergence_analysis.py  # Generates convergence curves and statistics
 
 ---
 
-## ❓ FAQ
+## FAQ
 
 ### Q: Why is Hagfish faster than DEHB/SMAC3?
 
@@ -463,15 +462,15 @@ DEHB/SMAC3 use fixed budget schedules that waste compute on diminishing returns.
 
 **Use Hagfish when:**
 
-- ✅ Training cost is significant (large models, limited budget)
-- ✅ You need fast convergence (early stopping scenarios)
-- ✅ Accuracy-cost tradeoff matters (production constraints)
+- Training cost is significant (large models, limited budget)
+- You need fast convergence (early stopping scenarios)
+- Accuracy-cost tradeoff matters (production constraints)
 
 **Use traditional HPO when:**
 
-- ❌ Training is extremely fast (seconds per trial)
-- ❌ You only care about peak accuracy (infinite budget)
-- ❌ Single-fidelity optimization (no budget levels)
+- Training is extremely fast (seconds per trial)
+- You only care about peak accuracy (infinite budget)
+- Single-fidelity optimization (no budget levels)
 
 ### Q: How do I choose the right alpha value?
 
@@ -519,15 +518,15 @@ trainer.observe(metric=accuracy, cost=0.0)  # Hagfish learns to avoid bad config
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! We're particularly interested in:
 
-- 🔧 State persistence/serialization
-- 📊 Additional benchmark datasets
-- 🚀 Parallel evaluation support
-- 🧪 Integration examples (more frameworks)
-- 📖 Documentation improvements
+- State persistence/serialization
+- Additional benchmark datasets
+- Parallel evaluation support
+- Integration examples (more frameworks)
+- Documentation improvements
 
 **Steps:**
 
@@ -539,7 +538,9 @@ Contributions are welcome! We're particularly interested in:
 
 ---
 
-## 📚 Citation
+## Citation
+
+(Section would be updated soon.)
 
 If you use Hagfish in your research, please cite:
 
@@ -548,8 +549,7 @@ If you use Hagfish in your research, please cite:
   title = {Hagfish: Adaptive Multi-Fidelity Hyperparameter Optimization},
   author = {Your Name},
   year = {2025},
-  url = {https://github.com/your-repo/hagfish-adaptive-trainer},
-  note = {State-of-the-art convergence speed with adaptive cost efficiency}
+  url = {https://github.com/Sarrvessh/hagfish-agent-system},
 }
 ```
 
@@ -563,22 +563,13 @@ If you use Hagfish in your research, please cite:
 
 ---
 
-## 📜 License
+## License
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-## 🔗 Links
-
-- **PyPI Package:** https://pypi.org/project/hagfish-adaptive-trainer/
-- **GitHub Repository:** https://github.com/your-repo/hagfish-adaptive-trainer
-- **Documentation:** https://hagfish-adaptive-trainer.readthedocs.io/ _(coming soon)_
-- **Issue Tracker:** https://github.com/your-repo/hagfish-adaptive-trainer/issues
-
----
-
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Special thanks to:
 
@@ -588,6 +579,6 @@ Special thanks to:
 
 ---
 
-**Built with ❤️ for the AutoML community**
+**Built with ❤️ for the AutoML community - © Sarvesh PV**
 
-_Hagfish-SOTA: Because the fastest path to 95% accuracy isn't always the most expensive one._
+_Hagfish-Adaptive-Tuner: Because the fastest path to 95% accuracy isn't always the most expensive one._
