@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hagfish-adaptive-trainer"
-version = "0.2.1"
-description = "Adaptive training budget optimizer (bandit-style agentic framework)"
+version = "0.3.0"
+description = "Adaptive training budget optimizer (bio-inspired Hagfish agent)"
 readme = "README.md"
 requires-python = ">=3.8"
 
@@ -24,9 +24,13 @@ classifiers = [
 ]
 
 dependencies = [
-  "numpy",
-  "scikit-learn"
+  "numpy>=1.24,<2.0"
 ]
 
 [tool.setuptools]
 packages = ["adaptive_trainer"]
+
+[project.urls]
+Repository = "https://github.com/Sarrvessh/Hagfish_Agent_System"
+Issues = "https://github.com/Sarrvessh/Hagfish_Agent_System/issues"
+Documentation = "https://github.com/Sarrvessh/Hagfish_Agent_System#readme"

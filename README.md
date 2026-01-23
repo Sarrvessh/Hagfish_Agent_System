@@ -1,10 +1,10 @@
-# hagfish_adaptive_tuner
+# hagfish_adaptive_trainer
 
 [![PyPI version](https://img.shields.io/pypi/v/hagfish-adaptive-trainer.svg)](https://pypi.org/project/hagfish-adaptive-trainer/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-**hagfish_adaptive_tuner** is a  adaptive hyperparameter optimization framework that achieves **2.7× faster convergence** than recent methods (DEHB, SMAC3) while maintaining competitive accuracy through intelligent budget allocation.
+**hagfish_adaptive_trainer** is an adaptive hyperparameter optimization framework that achieves **2.7× faster convergence** than recent methods (DEHB, SMAC3) while maintaining competitive accuracy through intelligent budget allocation.
 
 > _"The fastest path to 95% accuracy isn't always the most expensive one."_
 
@@ -12,13 +12,13 @@
 
 ## Key Achievements
 
-| Metric                | Performance                                 | Comparison                              |
-| --------------------- | ------------------------------------------- | --------------------------------------- |
-| **Convergence Speed** | **3.67 episodes** to 95% accuracy           | 2.7× faster than DEHB (~10 episodes)    |
-| **Cost Efficiency**   | **11.9% average savings** vs Fixed baseline | Adaptive budget: 0.2-1.0 fidelity       |
-| **Pareto Dominance**  | **6/8 datasets** on frontier                |  accuracy-cost tradeoff |
-| **Statistical Wins**  | **p < 0.05** on 4/8 datasets                | Australian, KC1, Blood, Credit_g        |
-| **NAS Performance**   | **#2 accuracy** (0.9144)                    | Competitive with Optuna (0.9159)        |
+| Metric                | Performance                                 | Comparison                           |
+| --------------------- | ------------------------------------------- | ------------------------------------ |
+| **Convergence Speed** | **3.67 episodes** to 95% accuracy           | 2.7× faster than DEHB (~10 episodes) |
+| **Cost Efficiency**   | **11.9% average savings** vs Fixed baseline | Adaptive budget: 0.2-1.0 fidelity    |
+| **Pareto Dominance**  | **6/8 datasets** on frontier                | accuracy-cost tradeoff               |
+| **Statistical Wins**  | **p < 0.05** on 4/8 datasets                | Australian, KC1, Blood, Credit_g     |
+| **NAS Performance**   | **#2 accuracy** (0.9144)                    | Competitive with Optuna (0.9159)     |
 
 ### What Makes Hagfish Different?
 
@@ -44,6 +44,12 @@ Hagfish introduces an **agentic control loop** that continuously asks:
 pip install hagfish-adaptive-trainer
 ```
 
+**Requirements**
+
+- Python 3.8–3.11
+- NumPy >= 1.24, < 2.0
+- Tested on Windows, Linux, and macOS
+
 ### Basic Usage
 
 ```python
@@ -64,9 +70,7 @@ accuracy = model.score(X_val, y_val)
 trainer.observe(metric=accuracy, cost=training_cost)
 ```
 
-**That's it!** Hagfish learns from each episode and adapts the budget automatically.
-
----
+## **That's it!** Hagfish learns from each episode and adapts the budget automatically.
 
 ## Comprehensive Benchmark Results
 
@@ -432,17 +436,17 @@ python convergence_analysis.py  # Generates convergence curves and statistics
 
 ### Core Documentation
 
-- **[API Reference](docs/API_REFERENCE.md)** - Comprehensive API documentation
-- **[Benchmark Results](experiments/comprehensive_benchmark_results.md)** - Detailed analysis
-- **[Quick Start Guide](docs/QUICK_START.md)** - Get running in 5 minutes
+- **[API Reference](https://github.com/Sarrvessh/Hagfish_Agent_System/blob/main/docs/API_REFERENCE.md)** - Comprehensive API documentation
+- **[Benchmark Results](https://github.com/Sarrvessh/Hagfish_Agent_System/blob/main/experiments/comprehensive_benchmark_results.md)** - Detailed analysis
+- **[Quick Start Guide](https://github.com/Sarrvessh/Hagfish_Agent_System/blob/main/docs/QUICK_START.md)** - Get running in 5 minutes
 
 ### Technical Deep Dives
 
-- **[Cost Model Specification](docs/COST_MODEL_SPECIFICATION.md)** - Quadratic cost function details
-- **[Convergence Analysis](docs/CONVERGENCE_ANALYSIS.md)** - 3.67 episode validation
-- **[SOTA Comparison](docs/SOTA_COMPARISON.md)** - DEHB, SMAC3, Optuna benchmarks
-- **[NAS Benchmark Spec](docs/NAS_BENCHMARK.md)** - Architecture search details
-- **[Baseline Implementations](docs/BASELINES.md)** - All 8 baseline methods
+- **[Cost Model Specification](https://github.com/Sarrvessh/Hagfish_Agent_System/blob/main/docs/COST_MODEL_SPECIFICATION.md)** - Quadratic cost function details
+- **[Convergence Analysis](https://github.com/Sarrvessh/Hagfish_Agent_System/blob/main/docs/CONVERGENCE_ANALYSIS.md)** - 3.67 episode validation
+- **[SOTA Comparison](https://github.com/Sarrvessh/Hagfish_Agent_System/blob/main/docs/SOTA_COMPARISON.md)** - DEHB, SMAC3, Optuna benchmarks
+- **[NAS Benchmark Spec](https://github.com/Sarrvessh/Hagfish_Agent_System/blob/main/docs/NAS_BENCHMARK.md)** - Architecture search details
+- **[Baseline Implementations](https://github.com/Sarrvessh/Hagfish_Agent_System/blob/main/docs/BASELINES.md)** - All 8 baseline methods
 
 ---
 
