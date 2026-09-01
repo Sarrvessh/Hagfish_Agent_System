@@ -1,9 +1,0 @@
-metric,algorithm,average_rank
-final_best_error,dehb,1.3058823529411765
-final_best_error,asha,2.7161764705882354
-final_best_error,bohb,2.7161764705882354
-final_best_error,hat,3.261764705882353
-total_cost,hat,1.2470588235294118
-total_cost,dehb,2.8823529411764706
-total_cost,asha,2.9352941176470586
-total_cost,bohb,2.9352941176470586
