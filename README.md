@@ -6,10 +6,16 @@ optimization. HAT is primarily a budget-control layer: configuration proposal
 can remain external while HAT chooses episode-level population, iteration, and
 elite budgets from observed quality and cost.
 
-This repository contains the implementation, experiment entry points, saved raw
-outputs, statistical analysis, and figure/table generation used by the paper
+This is the reproduction repository for the TEMSMET 2026 camera-ready paper
 *Hagfish Adaptive Trainer: Resource-Constrained Hyperparameter Optimization and
-Dynamic Budget Allocation*.
+Dynamic Budget Allocation* (Paper ID 2855). Source, canonical result tables,
+and the saved-data analysis used by the paper live here:
+
+https://github.com/Sarrvessh/Hagfish_Agent_System
+
+The LaTeX manuscript is not part of this repository. Duplicate freeze snapshots
+and raw ASHA/BOHB shard dumps are also omitted; the paper numbers come from the
+canonical CSVs listed below.
 
 ## Architecture
 
@@ -28,17 +34,32 @@ marked as not being Full HAT.
 ```text
 adaptive_trainer/       Core HAT planner, critic, memory, and controller
 lcbench_benchmark/      LCBench/YAHPO runners, ablations, sensitivity, statistics
-hpobench_benchmark/     HPOBench experiment and analysis entry points
+hpobench_benchmark/     HPOBench experiment, label recovery, and analysis
 pathfinding_benchmark/  Pathfinding benchmark implementation
 analysis/               Saved-data figure and table generation
 scripts/                Safe paper-reproduction entry point
 results/
-  lcbench/              Full HAT raw runs, baseline raw archive, final paired runs
-  hpobench/              Final HPOBench outputs and statistics
-  pathfinding/           Final pathfinding raw output
-  camera_ready/          Final statistical, ablation, and sensitivity tables
-tests/                   Core behavior and API tests
+  lcbench/              Canonical LCBench CSVs used by the paper
+  hpobench/             Merged trajectories, recovered labels, and statistics
+  pathfinding/          Final pathfinding raw output
+  camera_ready/         Ablation, sensitivity, and LCBench statistical tables
+  figures/              Regenerated paper figures and tables
+tests/                  Core behavior and API tests
 ```
+
+Canonical LCBench files:
+
+- `results/lcbench/full_hat/real_hat_runs.csv` — 340 Full HAT runs (`α = 5e-4`)
+- `results/lcbench/corrected_asha_runs.csv` — 340/340 corrected ASHA runs
+- `results/lcbench/final_runs.csv` — paired table used by `stats` (Random Search, corrected ASHA, DEHB-style, HAT)
+- `results/lcbench/baselines/all_results.csv.gz` — archived original baseline trial stream
+
+HPOBench files:
+
+- `results/hpobench/results_merged.csv` — original unlabeled merged trajectory
+- `results/hpobench/results_merged_labeled.csv` — recovered dataset labels
+- `results/hpobench/dataset_label_recovery.json` — SHA-256, block boundaries, and grid checks
+- `results/hpobench/statistics_auc/` — AUC rankings reported in the paper
 
 ## Installation
 
@@ -86,9 +107,9 @@ python scripts/reproduce_paper.py figures
 python scripts/reproduce_paper.py commands
 ```
 
-- `verify` checks required artifacts and the frozen 340-run Full HAT values.
+- `verify` checks the required artifacts and the frozen 340-run Full HAT values.
 - `stats` recomputes paired tests from `results/lcbench/final_runs.csv`.
-- `figures` regenerates figures and tables from saved results.
+- `figures` regenerates `results/figures/` from the saved result tables.
 - `commands` prints the exact experiment commands without running them.
 - `analysis` runs only the saved-data statistics and figure stages.
 
@@ -103,8 +124,15 @@ python lcbench_benchmark/run_real_hat_full.py
 Its saved raw output is
 `results/lcbench/full_hat/real_hat_runs.csv`. The experiment calls the real
 `AdaptiveTrainer.plan()`/`observe()` loop with `PlannerAgent`, `CriticAgent`, and
-`AgentMemory`. Baseline trial-level outputs are retained in compressed form at
-`results/lcbench/baselines/all_results.csv.gz`.
+`AgentMemory`. The reported Full HAT controller uses `α = 5e-4`.
+
+The archived original baseline trial stream is
+`results/lcbench/baselines/all_results.csv.gz`. ASHA and BOHB rows in that
+archive are not the paper ASHA result: they were identical after a silent
+random fallback. The paper uses the corrected Syne Tune ASHA lifecycle in
+`results/lcbench/corrected_asha_runs.csv` (340/340). Incomplete corrected BOHB
+recomputations are excluded. The archived evolutionary result is labeled
+DEHB-style because it is not an execution of the official DEHB package.
 
 ### Ablation and Sensitivity
 
@@ -207,6 +235,7 @@ HAT, DEHB-style, and ASHA gives chi-square(2) = 412.947 and
 - LCBench seeds: 0-9
 - LCBench instances: 34
 - Full HAT trials per run: 200
+- Full HAT α: 5e-4
 
 ## Citation
 

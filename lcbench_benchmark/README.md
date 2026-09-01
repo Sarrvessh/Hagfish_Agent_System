@@ -45,8 +45,11 @@ python lcbench_benchmark/benchmark_runner.py \
   --output-dir benchmark_outputs/lcbench
 ```
 
-The publication baseline trial stream is preserved at
-`results/lcbench/baselines/all_results.csv.gz`.
+The archived original baseline trial stream is
+`results/lcbench/baselines/all_results.csv.gz`. The paper does not use the ASHA
+or BOHB rows from that archive. Corrected ASHA (340/340) is
+`results/lcbench/corrected_asha_runs.csv`. Incomplete corrected BOHB is
+excluded. The paired publication table is `results/lcbench/final_runs.csv`.
 
 ## Saved-data statistics
 
