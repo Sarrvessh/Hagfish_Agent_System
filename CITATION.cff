@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software or its reproducibility artifacts, please cite it using this metadata."
+title: "Hagfish Adaptive Trainer: Resource-Constrained Hyperparameter Optimization and Dynamic Budget Allocation"
+type: software
+authors:
+  - given-names: Sarvesh
+    family-names: PV
+  - given-names: P.
+    family-names: Hemashree
+repository-code: "https://github.com/Sarrvessh/Hagfish_Agent_System"
+version: 0.3.0
+license: MIT

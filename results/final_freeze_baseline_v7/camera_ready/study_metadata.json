@@ -1,0 +1,31 @@
+{
+  "protocol": "Paired deterministic configuration streams; HAT controls maximum LCBench fidelity per trial.",
+  "instances": [
+    "3945",
+    "167104",
+    "168329",
+    "168908",
+    "189873"
+  ],
+  "instance_selection": "Existing-results stratification spanning low/high cost and easier/harder instances.",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "trials": 60,
+  "ablation_alpha": 0.0005,
+  "sensitivity_alphas": [
+    0.0,
+    0.0001,
+    0.001,
+    0.01
+  ],
+  "python": "3.11.9",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "numpy": "1.26.4",
+  "pandas": "2.2.3",
+  "scipy": "1.15.3"
+}

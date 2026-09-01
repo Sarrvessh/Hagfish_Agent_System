@@ -1,0 +1,7 @@
+algorithm_a,algorithm_b,wilcoxon_stat,p_value,p_value_holm,significant_0_05
+hagfish,hyperband,0.0,0.125,0.75,False
+hagfish,sha,0.0,0.125,0.75,False
+hagfish,tpe,0.0,0.125,0.75,False
+hyperband,sha,7.0,1.0,1.0,False
+hyperband,tpe,7.0,1.0,1.0,False
+sha,tpe,7.0,1.0,1.0,False

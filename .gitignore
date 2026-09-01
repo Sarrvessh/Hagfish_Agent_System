@@ -44,6 +44,8 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -73,14 +75,25 @@ venv.bak/
 
 # macOS
 .DS_Store
+Thumbs.db
 
-# Project-specific
-experiments/*.csv
-experiments/results*.csv
-experiments/borg_traces_data.csv
-experiments/dataset/*.csv
-experiments/dataset/*.zip
-experiments/experiments/*.csv
-experiments/experiments/*.png
-experiments/results*.csv
+# Paper drafting workspace is not part of the code artifact
 papers/
+
+# Local benchmark data and caches
+.benchmarks/
+yahpo_data/
+
+# Regenerable local outputs (publication artifacts live under results/)
+output/
+tmp/
+lcbench_benchmark/benchmark_outputs/
+hpobench_benchmark/benchmark_outputs/
+hpobench_benchmark/simple_hpo_bench_native/
+results/camera_ready_smoke/
+results/camera_ready_smoke2/
+*.log
+
+# Local exploratory notebooks
+Hagfish_Master.ipynb
+Global_Sanity.ipynb

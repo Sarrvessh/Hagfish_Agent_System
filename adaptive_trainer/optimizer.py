@@ -1,7 +1,4 @@
-import time
 from typing import Dict, Optional
-
-import numpy as np
 
 from .memory import AgentMemory
 from .critic import CriticAgent
@@ -25,11 +22,29 @@ class AdaptiveTrainer:
         memory and critic state accordingly.
     """
 
-    def __init__(self, alpha: float = 1e-4):
+    def __init__(
+        self,
+        alpha: float = 1e-4,
+        *,
+        use_memory: bool = True,
+        use_elite: bool = True,
+        use_burst: bool = True,
+        use_cost_control: bool = True,
+        seed: Optional[int] = None,
+    ):
         self.memory = AgentMemory()
-        self.planner = PlannerAgent()
+        self.planner = PlannerAgent(
+            use_memory=use_memory,
+            use_elite=use_elite,
+            use_burst=use_burst,
+            seed=seed,
+        )
         self.critic = CriticAgent()
         self.alpha = float(alpha)
+        self.use_memory = bool(use_memory)
+        self.use_elite = bool(use_elite)
+        self.use_burst = bool(use_burst)
+        self.use_cost_control = bool(use_cost_control)
 
     def plan(self, context: Dict) -> Dict:
         """Return a training budget given a context dictionary.
@@ -39,7 +54,8 @@ class AdaptiveTrainer:
         so that planning decisions can account for cost-sensitivity.
         """
         size = int(context.get("dataset_size", context.get("problem_size", 40)))
-        return self.planner.choose(size, self.memory, alpha=self.alpha)
+        effective_alpha = self.alpha if self.use_cost_control else 0.0
+        return self.planner.choose(size, self.memory, alpha=effective_alpha)
     def observe(self, metric: float, cost: float, params: Dict = None, episode: int = None, elapsed_time: float = 0.0):
         """Record an observed validation metric and resource cost.
 
@@ -49,7 +65,8 @@ class AdaptiveTrainer:
         previous_best = self.memory.best_distance
         current_best = float(metric)
         outcome = self.critic.assess(previous_best, current_best, self.memory)
-        reward = float(metric) - float(self.alpha) * float(cost)
+        effective_alpha = self.alpha if self.use_cost_control else 0.0
+        reward = float(metric) - float(effective_alpha) * float(cost)
 
         # Use 0 / placeholder values if params or episode are not given
         if params is None:
@@ -57,4 +74,15 @@ class AdaptiveTrainer:
         if episode is None:
             episode = len(self.memory.episode_history) + 1
 
-        self.memory.record_episode(episode, params, current_best, [], float(elapsed_time), outcome, reward=reward, cost=int(cost))
+        self.memory.record_episode(
+            episode,
+            params,
+            current_best,
+            [],
+            float(elapsed_time),
+            outcome,
+            reward=reward,
+            cost=float(cost),
+            use_memory=self.use_memory,
+            use_elite=self.use_elite,
+        )

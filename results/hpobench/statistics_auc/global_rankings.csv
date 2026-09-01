@@ -1,0 +1,5 @@
+global_position,algorithm,avg_rank
+1,sha,1.2
+2,hyperband,2.4
+3,hagfish,2.8
+4,tpe,3.6

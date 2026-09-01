@@ -54,44 +54,6 @@ class AgentMemory:
     
     episode_history: List[Dict[str, Any]] = field(default_factory=list)
 
-    def record_episode(self, episode: int, params: Dict[str, Any], distance: float,
-                       tour: np.ndarray, elapsed_time: float, outcome: str,
-                       reward: float = None, cost: int = None) -> None:
-        """Record a single episode and update best if necessary.
-
-        Parameters
-        ----------
-        reward: float, optional
-            Optional ML reward signal (higher is better). If None, omitted.
-        cost: int, optional
-            Optional resource cost (workers * budget). If None, omitted.
-
-        This method does not change the stagnation_count logic; the CriticAgent
-        is responsible for updating stagnation_count. The memory keeps the
-        canonical best_distance and best_tour and stores optional ML signals
-        for later analysis.
-        """
-        record = {
-            "episode": int(episode),
-            "params": dict(params),
-            "distance": float(distance),
-            "elapsed_time": float(elapsed_time),
-            "outcome": str(outcome),
-        }
-
-        # Conditionally include ML-specific fields to preserve backward compatibility
-        if reward is not None:
-            record["reward"] = float(reward)
-        if cost is not None:
-            record["resource_cost"] = int(cost)
-
-        self.episode_history.append(record)
-
-        # Update best if this episode produced a new best metric (higher is better)
-        if distance > self.best_distance:
-            self.best_distance = float(distance)
-            self.best_tour = np.array(tour, dtype=int)
-
     def last_outcome(self) -> str:
         """Return the outcome label of the most recent episode, or empty string."""
         if not self.episode_history:
@@ -124,7 +86,7 @@ class AgentMemory:
         end_distance = float(window[-1].get("distance", 0.0))
         accuracy_gain = max(0.0, end_distance - start_distance)
 
-        total_cost = sum([int(r.get("resource_cost", 0)) for r in window])
+        total_cost = sum([float(r.get("resource_cost", 0.0)) for r in window])
         if total_cost <= 0:
             return 0.0
 
@@ -205,7 +167,8 @@ class AgentMemory:
 
     def record_episode(self, episode: int, params: Dict[str, Any], distance: float,
                        tour: np.ndarray, elapsed_time: float, outcome: str,
-                       reward: float = None, cost: int = None) -> None:
+                       reward: float = None, cost: float = None,
+                       use_memory: bool = True, use_elite: bool = True) -> None:
         """Record a single episode and update best if necessary.
 
         Parameters
@@ -231,7 +194,7 @@ class AgentMemory:
         if reward is not None:
             record["reward"] = float(reward)
         if cost is not None:
-            record["resource_cost"] = int(cost)
+            record["resource_cost"] = float(cost)
 
         self.episode_history.append(record)
 
@@ -240,8 +203,9 @@ class AgentMemory:
             self.best_distance = float(distance)
             self.best_tour = np.array(tour, dtype=int)
             # Elite path updates to the winning configuration
-            self.update_elite_path(params)
+            if use_elite:
+                self.update_elite_path(params)
 
         # Hagfish slime mechanics: weak agents deposit slime on bad paths
-        if outcome in ["stagnated", "saturated"]:
+        if use_memory and outcome in ["stagnated", "saturated"]:
             self.deposit_slime(params)

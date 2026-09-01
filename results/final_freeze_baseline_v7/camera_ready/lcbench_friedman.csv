@@ -1,0 +1,3 @@
+metric,n_blocks,n_algorithms,friedman_statistic,p_value
+final_best_error,340,4,603.0347826086954,2.215595120824624e-130
+total_cost,340,4,474.87058823529475,1.3313778731245728e-102

@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 import numpy as np
 
 from .memory import AgentMemory
@@ -26,7 +26,16 @@ class PlannerAgent:
       - Slime pheromone -> Penalty for explored but ineffective configs
     """
 
-    def __init__(self, population_size: int = 10, decay_rate: float = 0.05) -> None:
+    def __init__(
+        self,
+        population_size: int = 10,
+        decay_rate: float = 0.05,
+        *,
+        use_memory: bool = True,
+        use_elite: bool = True,
+        use_burst: bool = True,
+        seed: Optional[int] = None,
+    ) -> None:
         """Initialize the Hagfish planner.
         
         Parameters
@@ -38,6 +47,10 @@ class PlannerAgent:
         """
         self.population_size = int(population_size)
         self.decay_rate = float(decay_rate)
+        self.use_memory = bool(use_memory)
+        self.use_elite = bool(use_elite)
+        self.use_burst = bool(use_burst)
+        self.rng = np.random.default_rng(seed)
         self.population = []  # Will be initialized in choose()
 
     def choose(self, problem_size: int, memory: AgentMemory, alpha: float = 1e-4) -> Dict[str, int]:
@@ -62,10 +75,11 @@ class PlannerAgent:
             self._initialize_population(problem_size)
         
         # Decay slime intensity over time (forgetting mechanism)
-        memory.slime_intensity = max(0.0, memory.slime_intensity * (1.0 - self.decay_rate))
+        if self.use_memory:
+            memory.slime_intensity = max(0.0, memory.slime_intensity * (1.0 - self.decay_rate))
         
         # Handle stagnation with elite slime burst
-        if memory.stagnation_count >= 3:
+        if self.use_burst and memory.stagnation_count >= 3:
             return self._elite_slime_burst(memory, problem_size, alpha)
         
         # Standard Hagfish swarming: select best non-slimed agent
@@ -73,14 +87,15 @@ class PlannerAgent:
 
     def _initialize_population(self, problem_size: int) -> None:
         """Initialize population of budget agents with diverse configurations."""
+        self.population = []
         base_pop = max(16, min(64, problem_size // 10))
         base_iter = max(50, min(150, problem_size // 5))
         
         # Create diverse population around base config
         for i in range(self.population_size):
             # Random variation in both pop_size and max_iter
-            var_pop = base_pop * np.random.uniform(0.5, 2.0)
-            var_iter = base_iter * np.random.uniform(0.5, 2.0)
+            var_pop = base_pop * self.rng.uniform(0.5, 2.0)
+            var_iter = base_iter * self.rng.uniform(0.5, 2.0)
             
             config = {
                 "pop_size": int(max(16, min(200, var_pop))),
@@ -94,7 +109,7 @@ class PlannerAgent:
         # Evaluate each agent in population, applying slime penalties
         scores = []
         for config in self.population:
-            slime_penalty = memory.get_slime_penalty(config)
+            slime_penalty = memory.get_slime_penalty(config) if self.use_memory else 1.0
             # Score = proximity to elite path × (1 - slime penalty)
             # Elite path = (elite_pop, elite_iter)
             elite_pop, elite_iter = memory.elite_path
@@ -105,26 +120,31 @@ class PlannerAgent:
             ) ** 0.5
             
             # Closer to elite = higher score, slime reduces score
-            score = (1.0 / (1.0 + dist_to_elite)) * slime_penalty
+            attraction = (1.0 / (1.0 + dist_to_elite)) if self.use_elite else 1.0
+            score = attraction * slime_penalty
             scores.append(score)
         
         # Select best non-slimed agent
-        best_idx = int(np.argmax(scores))
+        if self.use_elite or self.use_memory:
+            best_idx = int(np.argmax(scores))
+        else:
+            best_idx = int(self.rng.integers(0, len(self.population)))
         best_agent = dict(self.population[best_idx])
         
         # Apply cost-sensitivity: alpha-aware adaptation
         if alpha > 1e-3:  # High cost-sensitivity: be more conservative
             best_agent["pop_size"] = max(16, int(best_agent["pop_size"] * 0.9))
-            best_agent["max_iter"] = max(10, int(best_agent["max_iter"] * 0.9))
+            best_agent["max_iter"] = max(50, int(best_agent["max_iter"] * 0.9))
         
         # Update one random agent toward elite (exploitation-exploration balance)
-        idx = np.random.randint(0, self.population_size)
-        self.population[idx]["pop_size"] = int(
-            0.7 * self.population[idx]["pop_size"] + 0.3 * memory.elite_path[0]
-        )
-        self.population[idx]["max_iter"] = int(
-            0.7 * self.population[idx]["max_iter"] + 0.3 * memory.elite_path[1]
-        )
+        if self.use_elite:
+            idx = int(self.rng.integers(0, self.population_size))
+            self.population[idx]["pop_size"] = int(
+                0.7 * self.population[idx]["pop_size"] + 0.3 * memory.elite_path[0]
+            )
+            self.population[idx]["max_iter"] = int(
+                0.7 * self.population[idx]["max_iter"] + 0.3 * memory.elite_path[1]
+            )
         
         return best_agent
 
@@ -139,15 +159,24 @@ class PlannerAgent:
         memory.slime_intensity = min(1.0, memory.slime_intensity + 0.4)
         
         # Get elite burst configuration
-        burst_config = memory.elite_slime_burst(problem_size)
+        elite_pop, elite_iter = memory.elite_path
+        burst_pop = int(elite_pop * self.rng.uniform(1.5, 2.5))
+        burst_iter = int(elite_iter * self.rng.uniform(1.5, 2.5))
+        burst_pop = min(200, max(16, burst_pop))
+        burst_iter = min(1000, max(50, burst_iter))
+        burst_config = {
+            "pop_size": burst_pop,
+            "max_iter": burst_iter,
+            "elite_size": max(2, burst_pop // 8),
+        }
         
         # Reset population to explore new areas (dispersion)
         self._initialize_population(problem_size)
         
         # Encourage large jumps in population
         for config in self.population:
-            config["pop_size"] = int(config["pop_size"] * np.random.uniform(1.2, 1.8))
-            config["max_iter"] = int(config["max_iter"] * np.random.uniform(1.2, 1.8))
+            config["pop_size"] = int(config["pop_size"] * self.rng.uniform(1.2, 1.8))
+            config["max_iter"] = int(config["max_iter"] * self.rng.uniform(1.2, 1.8))
         
         # Clamp to reasonable bounds
         for config in self.population:

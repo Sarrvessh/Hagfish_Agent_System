@@ -1,0 +1,13 @@
+{
+  "protocol": "TEMSMET 2026 final freeze",
+  "instances": 34,
+  "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  "trials_per_run": 200,
+  "paired_blocks": 340,
+  "reported_algorithms": ["random_search", "asha", "dehb_style", "hat"],
+  "main_hat_alpha": 0.0005,
+  "asha_source": "corrected Syne Tune scheduler lifecycle",
+  "dehb_style_disclosure": "lightweight archived differential-evolution/Hyperband-inspired strategy; not the official DEHB implementation",
+  "bohb_status": "excluded because the archived rows were identical to ASHA after silent random fallback; the corrected full BOHB recomputation was not completed",
+  "final_runs": "results/lcbench/final_runs.csv"
+}

@@ -1,0 +1,5 @@
+global_position,algorithm,avg_rank
+1,SHA,1.2
+2,Hyperband,2.4
+3,HAT,2.8
+4,TPE,3.6

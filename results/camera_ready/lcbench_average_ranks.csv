@@ -1,0 +1,7 @@
+metric,algorithm,average_rank
+final_best_error,dehb_style,1.1294117647058823
+final_best_error,hat,2.238235294117647
+final_best_error,asha,2.6323529411764706
+total_cost,asha,1.0
+total_cost,hat,2.2470588235294118
+total_cost,dehb_style,2.7529411764705882

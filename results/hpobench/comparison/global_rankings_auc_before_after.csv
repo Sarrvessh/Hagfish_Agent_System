@@ -1,0 +1,5 @@
+algorithm,avg_rank_before,global_position_before,avg_rank_after,global_position_after,delta_avg_rank,delta_global_position
+sha,1.0,1,1.0,1,0.0,0
+hyperband,2.0,2,2.0,2,0.0,0
+tpe,3.0,3,4.0,4,1.0,1
+hagfish,4.0,4,3.0,3,-1.0,-1

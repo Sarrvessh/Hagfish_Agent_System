@@ -1,0 +1,2 @@
+algorithm,scenario,instance,mean_final_best_error,std_final_best_error,mean_total_cost,std_total_cost,n_seeds
+bohb,lcbench,3945,-98.44830322265625,,43429.684982299805,,1

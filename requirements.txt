@@ -1,0 +1,23 @@
+# Core numerical + plotting stack
+numpy>=1.24,<2.0
+pandas>=2.0
+scipy>=1.10
+scikit-posthocs>=0.9.0
+matplotlib>=3.8
+seaborn>=0.13
+tqdm>=4.66
+
+# Search-space and HPO tooling
+ConfigSpace<=0.6.1
+syne-tune>=0.12.0
+yahpo-gym>=1.0.2
+
+# Native baseline stack for hpobench evaluation
+hpobench>=0.0.11
+optuna>=3.6
+ray[tune]>=2.10
+
+# Pathfinding and native HPOBench adapters
+mealpy>=3.0.3
+cma>=4.4
+simple-hpo-bench>=0.2.0

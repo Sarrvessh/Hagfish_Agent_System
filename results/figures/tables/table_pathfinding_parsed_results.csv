@@ -1,0 +1,57 @@
+source_log,scenario,waypoints,algorithm,best_cost,valid_runs,total_runs,runtime_s
+pathfinding_full.txt,CLUTTER,5,CMAES,90.84,2,3,6.527
+pathfinding_full.txt,CLUTTER,5,DE,139.15,3,3,6.456
+pathfinding_full.txt,CLUTTER,5,GA,91.07,3,3,7.355
+pathfinding_full.txt,CLUTTER,5,GWO,105.0,3,3,6.644
+pathfinding_full.txt,CLUTTER,5,HAT,128.43,3,3,4.48
+pathfinding_full.txt,CLUTTER,5,PSO,117.01,2,3,6.027
+pathfinding_full.txt,CLUTTER,5,Simulated Annealing,109.71,3,3,3.027
+pathfinding_full.txt,CLUTTER,8,CMAES,90.85,1,3,9.768
+pathfinding_full.txt,CLUTTER,8,DE,147.16,3,3,9.322
+pathfinding_full.txt,CLUTTER,8,GA,127.45,3,3,10.131
+pathfinding_full.txt,CLUTTER,8,GWO,141.71,3,3,10.392
+pathfinding_full.txt,CLUTTER,8,HAT,154.31,3,3,5.396
+pathfinding_full.txt,CLUTTER,8,PSO,1268.23,0,3,8.969
+pathfinding_full.txt,CLUTTER,8,Simulated Annealing,102.41,3,3,7.396
+pathfinding_full.txt,MAZE,5,CMAES,4127.3,0,3,8.611
+pathfinding_full.txt,MAZE,5,DE,151.63,3,3,8.004
+pathfinding_full.txt,MAZE,5,GA,1151.47,0,3,8.375
+pathfinding_full.txt,MAZE,5,GWO,159.11,1,3,8.084
+pathfinding_full.txt,MAZE,5,HAT,1161.74,0,3,4.93
+pathfinding_full.txt,MAZE,5,PSO,1198.8,0,3,7.462
+pathfinding_full.txt,MAZE,5,Simulated Annealing,1148.24,0,3,3.756
+pathfinding_full.txt,MAZE,8,CMAES,4127.3,0,3,13.034
+pathfinding_full.txt,MAZE,8,DE,167.13,2,3,11.827
+pathfinding_full.txt,MAZE,8,GA,318.65,1,3,12.44
+pathfinding_full.txt,MAZE,8,GWO,1156.12,0,3,11.724
+pathfinding_full.txt,MAZE,8,HAT,189.63,1,3,6.479
+pathfinding_full.txt,MAZE,8,PSO,1374.38,0,3,11.206
+pathfinding_full.txt,MAZE,8,Simulated Annealing,252.74,1,3,9.031
+pathfinding_full.txt,SPARSE,5,CMAES,5127.28,0,3,1.291
+pathfinding_full.txt,SPARSE,5,DE,130.36,3,3,1.677
+pathfinding_full.txt,SPARSE,5,GA,129.6,3,3,1.966
+pathfinding_full.txt,SPARSE,5,GWO,129.25,3,3,1.985
+pathfinding_full.txt,SPARSE,5,HAT,132.43,3,3,1.172
+pathfinding_full.txt,SPARSE,5,PSO,146.25,3,3,1.074
+pathfinding_full.txt,SPARSE,5,Simulated Annealing,129.78,3,3,0.59
+pathfinding_full.txt,SPARSE,8,CMAES,1134.61,0,3,1.942
+pathfinding_full.txt,SPARSE,8,DE,137.59,3,3,2.1
+pathfinding_full.txt,SPARSE,8,GA,137.3,3,3,2.448
+pathfinding_full.txt,SPARSE,8,GWO,129.58,3,3,2.188
+pathfinding_full.txt,SPARSE,8,HAT,146.88,3,3,1.388
+pathfinding_full.txt,SPARSE,8,PSO,224.66,3,3,1.446
+pathfinding_full.txt,SPARSE,8,Simulated Annealing,130.65,3,3,1.316
+pathfinding_full.txt,TRAP,5,CMAES,40.0,3,3,5.138
+pathfinding_full.txt,TRAP,5,DE,40.43,3,3,5.522
+pathfinding_full.txt,TRAP,5,GA,40.62,3,3,5.784
+pathfinding_full.txt,TRAP,5,GWO,40.0,3,3,5.448
+pathfinding_full.txt,TRAP,5,HAT,43.25,3,3,3.138
+pathfinding_full.txt,TRAP,5,PSO,69.27,3,3,4.632
+pathfinding_full.txt,TRAP,5,Simulated Annealing,42.78,3,3,2.433
+pathfinding_full.txt,TRAP,8,CMAES,40.0,3,3,7.703
+pathfinding_full.txt,TRAP,8,DE,62.82,3,3,7.623
+pathfinding_full.txt,TRAP,8,GA,64.3,3,3,8.099
+pathfinding_full.txt,TRAP,8,GWO,59.37,3,3,7.492
+pathfinding_full.txt,TRAP,8,HAT,87.15,3,3,4.195
+pathfinding_full.txt,TRAP,8,PSO,211.59,3,3,6.844
+pathfinding_full.txt,TRAP,8,Simulated Annealing,46.74,3,3,5.579

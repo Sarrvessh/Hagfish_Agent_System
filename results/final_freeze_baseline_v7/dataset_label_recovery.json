@@ -1,0 +1,170 @@
+{
+  "method": "contiguous dataset blocks from overnight runner append order",
+  "datasets": [
+    "australian",
+    "car",
+    "phoneme",
+    "vehicle",
+    "blood_transfusion"
+  ],
+  "expected_algorithms": [
+    "sha",
+    "hyperband",
+    "tpe",
+    "hagfish"
+  ],
+  "expected_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "rows": 683481,
+  "run_blocks": 200,
+  "validation": {
+    "complete_algorithm_seed_grid_per_dataset": true,
+    "all_runs_reset_at_cumulative_cost_0_01": true,
+    "no_unlabeled_rows": true
+  },
+  "blocks": [
+    {
+      "block_index": 0,
+      "dataset": "australian",
+      "run_id_start": 0,
+      "run_id_end": 39,
+      "trajectory_rows": 135799,
+      "algorithms": [
+        "sha",
+        "hyperband",
+        "tpe",
+        "hagfish"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "block_index": 1,
+      "dataset": "car",
+      "run_id_start": 40,
+      "run_id_end": 79,
+      "trajectory_rows": 154552,
+      "algorithms": [
+        "sha",
+        "hyperband",
+        "tpe",
+        "hagfish"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "block_index": 2,
+      "dataset": "phoneme",
+      "run_id_start": 80,
+      "run_id_end": 119,
+      "trajectory_rows": 131641,
+      "algorithms": [
+        "sha",
+        "hyperband",
+        "tpe",
+        "hagfish"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "block_index": 3,
+      "dataset": "vehicle",
+      "run_id_start": 120,
+      "run_id_end": 159,
+      "trajectory_rows": 134101,
+      "algorithms": [
+        "sha",
+        "hyperband",
+        "tpe",
+        "hagfish"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "block_index": 4,
+      "dataset": "blood_transfusion",
+      "run_id_start": 160,
+      "run_id_end": 199,
+      "trajectory_rows": 127388,
+      "algorithms": [
+        "sha",
+        "hyperband",
+        "tpe",
+        "hagfish"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    }
+  ],
+  "source_file": "results/hpobench/results_merged.csv",
+  "source_sha256": "3660dede068317ca59fe79be3b18cfccfa0d5c47f03741967dc80e8506c01397",
+  "runner_file": "hpobench_benchmark/run_all_datasets.ps1",
+  "runner_sha256": "d6227b213034ccb0aec7c9c4f9856707d0c6ef4f708552658ee5e49eafb89ae3",
+  "recovery_script_sha256": "9fe1d7f468f4b0cec1e5c5c056befc1fb77e29415dcb2e29b45bc169140943ad",
+  "dataset_name_normalization": {
+    "blood-transfusion": "blood_transfusion"
+  }
+}

@@ -1,0 +1,9 @@
+benchmark,algorithm,metric_primary,value
+HPOBench,SHA,avg_rank,1.2
+HPOBench,Hyperband,avg_rank,2.4
+HPOBench,HAT,avg_rank,2.8
+HPOBench,TPE,avg_rank,3.6
+LCBench,ASHA,mean_final_best_error,-81.96787623798146
+LCBench,DEHB-style,mean_final_best_error,-88.68738214829389
+LCBench,HAT,mean_final_best_error,-84.10807858635398
+LCBench,Random Search,mean_final_best_error,-47.361945805654805
